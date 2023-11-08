@@ -22,6 +22,7 @@ import pandas as pd
 # Note: This module should be imported as cfg
 #
 # <COMPLETE THIS PART>
+import config as cfg
 
 
 
@@ -383,6 +384,11 @@ def get_avg(df, col, year):
 
     """
     #<COMPLETE THIS PART>
+    df_year = df[df.index.year == year]
+    column_data = df_year[col]
+    result = column_data.dropna().mean()
+
+    return result
 
 
 
@@ -429,6 +435,12 @@ def get_ew_rets(df, tickers):
 
     """
     #<COMPLETE THIS PART>
+    missing_tickers = set(tickers) - set(df.columns)
+    if missing_tickers:
+        raise Exception(f"Missing tickers: {missing_tickers}")
+    ew_returns = df[tickers].mean(axis=1, skipna=True)
+
+    return ew_returns
 
 
 
@@ -475,6 +487,14 @@ def get_ann_ret(ser, start, end):
 
     """
     # <COMPLETE THIS PART>
+    period=ser.loc[start:end]
+    tot_ret=(1+period.dropna()).prod()
+    days=period.count()
+
+    ann_ret=(tot_ret)**(252/days)-1
+
+    return ann_ret
+
 
 
 # ----------------------------------------------------------------------------
@@ -951,9 +971,9 @@ if __name__ == "__main__":
     #_test_mk_prc_df()
     #_test_mk_ret_df()
     #_test_mk_aret_df()
-    #_test_get_avg()
-    #_test_get_ew_rets()
-    #_test_get_ann_ret()
+    # _test_get_avg()
+    # _test_get_ew_rets()
+    # _test_get_ann_ret()
 
 
 
