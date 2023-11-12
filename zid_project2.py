@@ -188,6 +188,24 @@ def mk_prc_df(tickers, prc_col='adj_close'):
 
     """
     # <COMPLETE THIS PART>
+    # create an empty list
+    df_list = []
+
+    # loop through each ticker
+    for ticker in tickers:
+        # read the stock price data
+        df = read_prc_csv(ticker)
+
+        # select the specified column and rename it
+        df = df[[prc_col]].rename(columns={prc_col: ticker.lower()})
+
+        # add the dataframe to our list
+        df_list.append(df)
+
+    # combine all data frames to one
+    combined_df = pd.concat(df_list, axis=1, join='outer')
+
+    return combined_df
 
 
 
